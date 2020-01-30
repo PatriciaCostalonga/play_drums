@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <title>JS Drum Kit</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <h1>Hit the drums!</h1>
+            <h2>Press the keys on your keyboard and make some noise</h2>
+        </header>
+        <main class="keys">
+            <!-- data attributes, if you want to make something as a key, you should insert the "data-" before it. this attribute will connect the key to the audio. -->
+            <div data-key="65" class="key">
+                <kbd>A</kbd> <!-- keyboard input -->
+                <span class="sound">clap</span> <!-- group inline-elements in a document -->
+            </div>
+            <div data-key="87" class="key">
+                <kbd>W</kbd> 
+                <span class="sound">hihat</span> 
+            </div>
+            <div data-key="83" class="key">
+                <kbd>S</kbd> 
+                <span class="sound">boom</span> 
+            </div>
+            <div data-key="68" class="key">
+                <kbd>D</kbd> 
+                <span class="sound">kick</span> 
+            </div>
+            <div data-key="70" class="key">
+                <kbd>F</kbd> 
+                <span class="sound">openhat</span> 
+            </div>
+            <div data-key="74" class="key">
+                <kbd>J</kbd> 
+                <span class="sound">snare</span> 
+            </div>
+            <div data-key="75" class="key">
+                <kbd>K</kbd> 
+                <span class="sound">tom</span> 
+            </div>
+            <div data-key="73" class="key">
+                <kbd>I</kbd> 
+                <span class="sound">tink</span> 
+            </div>
+            <div data-key="76" class="key">
+                <kbd>L</kbd> 
+                <span class="sound">ride</span> 
+            </div>
+        </main>
+
+        <audio data-key="65" src="sounds/clap.wav"></audio>
+        <audio data-key="87" src="sounds/hihat.wav"></audio>
+        <audio data-key="83" src="sounds/boom.wav"></audio>
+        <audio data-key="68" src="sounds/kick.wav"></audio>
+        <audio data-key="70" src="sounds/openhat.wav"></audio>
+        <audio data-key="74" src="sounds/snare.wav"></audio>
+        <audio data-key="75" src="sounds/tom.wav"></audio>
+        <audio data-key="73" src="sounds/tink.wav"></audio>
+        <audio data-key="76" src="sounds/ride.wav"></audio>
+        
+        <script>
+            // backtick character, allows the use of Template Literals. Template literals are string literals allowing embedded expressions. You can use multi-line strings and string interpolation features with them.
+            function playSound(e){
+                const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); 
+                const key = document.querySelector(`.key[data-key="${e.keyCode}"]`); 
+                if(!audio) return; //stop the function from running all together
+                audio.currentTime = 0; //rewind to the start, so the key can be played multiple times simulteanously
+                audio.play();
+                key.classList.add('playing'); //doen't need the point before "playing" since is already saying classList. Is the same as key.addClass('playing');
+            }
+            //better than using a TimeOut event and having to adapt the CSS transition to it. Use an Transition END Event.
+            function removeTransition(e){
+                    // console.log(e); to test the transition 
+                    if(e.propertyName !== 'transform') return; //skip if it's not a transform
+                    // console.log(e.propertyName); to test if the transform shows when the function is finished
+                    // this (you can console.log to see what it is) = whatever called against it. in our case it's the key itself.
+                    this.classList.remove('playing');
+            }
+                const keys = document.querySelectorAll('.key');
+                keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+                window.addEventListener('keydown', playSound);
+                // console.log(e.keyCode);
+                // console.log(key);
+        </script>
+    </body>
+</html>
