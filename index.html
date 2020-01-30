@@ -78,11 +78,19 @@
                     // this (you can console.log to see what it is) = whatever called against it. in our case it's the key itself.
                     this.classList.remove('playing');
             }
-                const keys = document.querySelectorAll('.key');
-                keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-                window.addEventListener('keydown', playSound);
-                // console.log(e.keyCode);
-                // console.log(key);
+            function mobileScreen(){
+                if (window.matchMedia("(max-width: 700px)").matches){
+                    screen.orientation.lock("landscape-primary");
+                }
+                else{
+                    screen.orientation.lock("natural");
+                }
+            }
+            const keys = document.querySelectorAll('.key');
+            keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+            window.addEventListener('keydown', playSound);
+            // console.log(e.keyCode);
+            // console.log(key);
         </script>
     </body>
 </html>
