@@ -12,7 +12,7 @@
         </header>
         <main class="keys">
             <!-- data attributes, if you want to make something as a key, you should insert the "data-" before it. this attribute will connect the key to the audio. -->
-            <div data-key="65" class="key">
+            <div onclick=playSound(e) data-key="65" class="key">
                 <kbd>A</kbd> <!-- keyboard input -->
                 <span class="sound">clap</span> <!-- group inline-elements in a document -->
             </div>
@@ -70,6 +70,13 @@
                 audio.play();
                 key.classList.add('playing'); //doen't need the point before "playing" since is already saying classList. Is the same as key.addClass('playing');
             }
+            function touchHandler(e) {
+                e.preventDefault();
+
+                if(e.touches){
+                    playSound();
+                }
+            }
             //better than using a TimeOut event and having to adapt the CSS transition to it. Use an Transition END Event.
             function removeTransition(e){
                     // console.log(e); to test the transition 
@@ -79,16 +86,16 @@
                     this.classList.remove('playing');
             }
             function mobileScreen(){
-                if (window.matchMedia("(max-width: 700px)").matches){
-                    screen.orientation.lock("landscape-primary");
+                if (window.matchMedia('(max-width: 700px)').matches){
+                    screen.orientation.lock('landscape-primary');
                 }
                 else{
-                    screen.orientation.lock("natural");
+                    screen.orientation.lock('natural');
                 }
             }
             const keys = document.querySelectorAll('.key');
             keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-            window.addEventListener('keydown', playSound);
+            window.addEventListener('keydown', playSound, 'touchstart', touchHandler);
             // console.log(e.keyCode);
             // console.log(key);
         </script>
